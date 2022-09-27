@@ -1,13 +1,13 @@
 from django.db import models
 from datetime import datetime
 from django.contrib.auth.models import User
-from django.contrib.auth.models import AbstractUser
 from django.utils.text import slugify 
 
 class Person(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    avatar = models.ImageField(upload_to ='uploads_avatar/', default='uploads_avatar/default.png')
     money = models.DecimalField(max_digits=10, decimal_places=3, default=0)
-    phone = models.TextField(max_length=11)
+    phone = models.CharField(max_length=11)
     address = models.CharField(max_length=255)
     def __str__(self):
        return self.user.username
@@ -51,6 +51,6 @@ class FoodCart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Food, on_delete=models.CASCADE, blank= True, null= True)
     addCart = models.BooleanField(default=False)
-
+    isOrder = models.BooleanField(default=False)
     def __str__(self):
         return self.user.username
