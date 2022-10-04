@@ -4,18 +4,19 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-from .views import UserList, Food, FoodDetail, FoodCategory, GetFoodByCategory, FoodCart
+from .views import UserList, Food, FoodDetail, FoodCategory, GetFoodByCategory, FoodCartPutDelete, FoodCartGetPost, ChangePassword
 
 urlpatterns = [
-    path('cart/<int:pk>', FoodCart.as_view()),
-    path('cart/', FoodCart.as_view(), name='food_cart'),
-    path('category/', FoodCategory.as_view(), name='all_category'),
+    path('cart/', FoodCartGetPost.as_view(), name='get_post_cart'),
+    path('cart/<int:pk>', FoodCartPutDelete.as_view(), name='put_delete_cart'),
+    path('food/category/', FoodCategory.as_view(), name='all_category'),
     path('food/category/<int:pk>/', GetFoodByCategory.as_view(), name='get_food_by_category'),
     path('food/<int:pk>/', FoodDetail.as_view(), name='detail_food'),
     path('food/', Food.as_view(), name='all_food'),
-    path('user/', UserList.as_view()),
-    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('user/', UserList.as_view(), name='user'),
+    path('user/password/', ChangePassword.as_view(), name='password'),
+    path('user/login/', TokenObtainPairView.as_view(), name='user_login_token'),
+    path('user/logout/', TokenRefreshView.as_view(), name='user_refresh_token'),
 ]
 
 

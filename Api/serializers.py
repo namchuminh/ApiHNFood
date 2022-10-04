@@ -1,12 +1,22 @@
 from attr import field
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Food,FoodCategory,FoodCart
+from .models import Food,FoodCategory,FoodCart, Person
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', ]
+        fields = ["id","username", "password", "first_name", "last_name", "email"]
+
+class UserPutSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["first_name", "last_name", "email",]
+
+class ChangePasswordSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["password",]
 
 class FoodCategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -23,4 +33,25 @@ class FoodCartSerializer(serializers.ModelSerializer):
         model = FoodCart
         fields = "__all__"
 
+
+class FoodCartPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FoodCart
+        fields = ["product", "user"]
+
+class FoodCartPutSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FoodCart
+        fields = ["isOrder"]
+
+        
+class PersonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Person
+        fields = "__all__"
+        
+class PersonPutSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Person
+        fields = ["phone","address",]
     
