@@ -1,5 +1,3 @@
-from email.policy import HTTP
-from lib2to3.pgen2 import token
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 from django.http import Http404
@@ -28,7 +26,7 @@ class UserList(APIView):
     permission_classes = [permissions.IsAuthenticated]
     @swagger_auto_schema(
         operation_description='Lấy ra thông tin chi tiết của User dựa theo Token',
-        operation_summary='Lấy ra thông tin chi tiết của một User'
+        operation_summary='Lấy ra thông tin chi tiết của một User',
     )
     def get(self, request, format=None):
         token = request.headers.get('Authorization').split(' ')[1]
