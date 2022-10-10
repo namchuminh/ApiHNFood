@@ -13,6 +13,11 @@ class UserPutSerializer(serializers.ModelSerializer):
         model = User
         fields = ["first_name", "last_name", "email",]
 
+class UserRegisterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["username", "password",]
+
 class ChangePasswordSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -54,4 +59,8 @@ class PersonPutSerializer(serializers.ModelSerializer):
     class Meta:
         model = Person
         fields = ["phone","address",]
-    
+
+class PersonRegisterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Person
+        fields = ["user","phone",]

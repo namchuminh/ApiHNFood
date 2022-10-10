@@ -4,7 +4,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-from .views import UserList, Food, FoodDetail, FoodCategory, GetFoodByCategory, FoodCartPutDelete, FoodCartGetPost, ChangePassword
+from .views import UserList, Food, FoodDetail, FoodCategory, GetFoodByCategory, FoodCartPutDelete, FoodCartGetPost, ChangePassword, UserRegister
 
 urlpatterns = [
     path('cart/', FoodCartGetPost.as_view(), name='get_post_cart'),
@@ -16,6 +16,7 @@ urlpatterns = [
     path('user/', UserList.as_view(), name='user'),
     path('user/password/', ChangePassword.as_view(), name='password'),
     path('user/login/', TokenObtainPairView.as_view(), name='user_login_token'),
+    path('user/register/', UserRegister.as_view(), name='user_register'),
     path('user/logout/', TokenRefreshView.as_view(), name='user_refresh_token'),
 ]
 

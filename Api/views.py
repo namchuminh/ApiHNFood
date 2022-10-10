@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from Api.utils import getUserIdByToken, jsonUserData
 from .serializers import PersonSerializer, UserSerializer,FoodSerializer, FoodCategorySerializer, FoodCartSerializer
-from .serializers import UserPutSerializer, PersonPutSerializer, ChangePasswordSerializer, FoodCartPostSerializer, FoodCartPutSerializer
+from .serializers import UserPutSerializer, PersonPutSerializer, ChangePasswordSerializer, FoodCartPostSerializer, FoodCartPutSerializer, PersonRegisterSerializer, UserRegisterSerializer
 from django.contrib.auth.models import User
 from .models import Food as Foo, Person
 from .models import FoodCategory as FooCategory
@@ -66,6 +66,37 @@ class UserList(APIView):
                 return Response({"message" : "Success!"}, status=status.HTTP_200_OK)
         return Response({"message" : "Faild update!"}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
+class UserRegister(APIView):
+    @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'username': openapi.Schema(type=openapi.TYPE_STRING, description='Tên đăng nhập', default='nguyenvana'),
+                'password': openapi.Schema(type=openapi.TYPE_STRING, description='Mật khẩu', default='nguyenvana123!@'),
+                'phone': openapi.Schema(type=openapi.TYPE_STRING, description='Số điện thoại', default='0999888777'),
+            }
+        ),
+        operation_description='Đang ký tài khoản người dùng mới bao gồm username, password, phone',
+        operation_summary='Tạo mới một tài khoản cho người dùng'
+    )
+    def post(self, request, format=None):
+        try:
+            serializerUser = UserRegisterSerializer(data=request.data)
+            if serializerUser.is_valid():
+                    serializerUser.save()
+                    id = User.objects.last().id
+                    dataPerson = {
+                        "user" : id,
+                        "phone" : request.data["phone"],
+                    }
+                    serializerPerson = PersonRegisterSerializer(data=dataPerson)
+                    if serializerPerson.is_valid():
+                        serializerPerson.save()
+                        return Response({"message" : "Success!"}, status=status.HTTP_201_CREATED)
+            return Response({"message" : "Account already exists!"}, status=status.HTTP_406_NOT_ACCEPTABLE)
+        except:
+            return Response({"message" : "Register Faild!"}, status=status.HTTP_400_BAD_REQUEST)
+        
 class ChangePassword(APIView):
     permission_classes = [permissions.IsAuthenticated]
     @swagger_auto_schema(
