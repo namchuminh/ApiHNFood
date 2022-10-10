@@ -15,5 +15,6 @@ def jsonUserData(serializerUser,serializerPerson):
         "phone": serializerPerson.data["phone"],
         "money": serializerPerson.data["money"],
         "address": serializerPerson.data["address"],
+        "avatar" : serializerPerson.data["avatar"],
     }
     
