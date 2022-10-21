@@ -81,6 +81,7 @@ class UserRegister(APIView):
     )
     def post(self, request, format=None):
         try:
+            request.data["password"] = make_password(request.data["password"], None, "pbkdf2_sha256")
             serializerUser = UserRegisterSerializer(data=request.data)
             if serializerUser.is_valid():
                     serializerUser.save()

@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 from datetime import datetime
 from django.contrib.auth.models import User
@@ -17,6 +18,7 @@ class FoodCategory(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(unique=True, blank=True, null=True)
     description = models.TextField()
+    image = models.ImageField(upload_to ='uploads/', blank=True, null=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
