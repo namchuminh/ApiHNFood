@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 10, 2022 lúc 11:11 AM
+-- Thời gian đã tạo: Th10 21, 2022 lúc 09:02 PM
 -- Phiên bản máy phục vụ: 10.4.22-MariaDB
 -- Phiên bản PHP: 7.4.27
 
@@ -107,7 +107,17 @@ INSERT INTO `api_foodcart` (`id`, `addCart`, `product_id`, `user_id`, `isOrder`)
 (12, 0, 10, 2, 0),
 (13, 0, 18, 1, 0),
 (14, 0, 3, 1, 0),
-(15, 0, 6, 1, 0);
+(15, 0, 6, 1, 0),
+(17, 0, 1, 1, 0),
+(18, 0, 1, 1, 0),
+(19, 0, 1, 1, 0),
+(20, 0, 8, 1, 0),
+(21, 0, 1, 1, 0),
+(22, 0, 2, 1, 0),
+(23, 0, 3, 1, 0),
+(24, 0, 3, 1, 0),
+(25, 0, 7, 1, 0),
+(26, 0, 14, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -119,18 +129,19 @@ CREATE TABLE `api_foodcategory` (
   `id` bigint(20) NOT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `slug` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `description` longtext COLLATE utf8_unicode_ci NOT NULL
+  `description` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `image` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `api_foodcategory`
 --
 
-INSERT INTO `api_foodcategory` (`id`, `name`, `slug`, `description`) VALUES
-(1, 'Đồ Ăn Nhanh', 'o-an-nhanh', 'Đồ ăn nhanh có tên gọi tiếng anh là Fastfood. Đây là những món ăn, thực phẩm hay đồ uống được chế biến nhanh chóng và thưởng thức tại chỗ hoặc gói mang về. Thông thường, đồ ăn nhanh được chế biến sẵn, khi khách tới mua thì nhà hàng chỉ cần làm nóng hoặc chiên lại trong vài phút là đã có thể phục vụ thực khách.'),
-(2, 'Đồ Tráng Miệng', 'o-trang-mieng', 'Tráng miệng là một món ăn nhẹ (có thể là bánh kẹo) dùng khi kết thúc một bữa ăn chính. Khẩu phần nhỏ thôi nhưng trình bày đẹp mắt. Món này thường bao gồm các loại thực phẩm ngọt, và có thể là đồ uống như rượu vang tráng miệng hoặc rượu mùi, nhưng có thể bao gồm cà phê, pho mát, hạt quả, hoặc các món ăn khác.'),
-(3, 'Đồ Ăn Cơm', 'o-an-com', 'Cơm là một loại thức ăn được làm ra từ gạo bằng cách đem nấu với một lượng vừa đủ nước để nấu chín. Cơm thường có nguyên liệu là gạo tẻ/gạo nếp và không có thêm gia vị, là thức ăn chính gần như hàng ngày của người Đông Nam Á và Đông Á. Cơm còn là nguyên liệu cho các món ăn chế biến khác nhau'),
-(4, 'Nước Giải Khát', 'nuoc-giai-khat', 'Nước giải khát có ga là một loại thức uống thường chứa nước cácbon dioxide bão hòa, chất làm ngọt, và thường có thêm hương liệu. Chất làm ngọt có thể là đường, xirô bắp giàu gluctose, chất làm ngọt thay thế. Một số nước giải khát có ga khác còn chứa caffeine, phẩm màu, chất bảo quản và các thành phần khác.');
+INSERT INTO `api_foodcategory` (`id`, `name`, `slug`, `description`, `image`) VALUES
+(1, 'Đồ Ăn Nhanh', 'o-an-nhanh', 'Đồ ăn nhanh có tên gọi tiếng anh là Fastfood. Đây là những món ăn, thực phẩm hay đồ uống được chế biến nhanh chóng và thưởng thức tại chỗ hoặc gói mang về. Thông thường, đồ ăn nhanh được chế biến sẵn, khi khách tới mua thì nhà hàng chỉ cần làm nóng hoặc chiên lại trong vài phút là đã có thể phục vụ thực khách.', 'uploads/do_an_nhanh.png'),
+(2, 'Đồ Tráng Miệng', 'o-trang-mieng', 'Tráng miệng là một món ăn nhẹ (có thể là bánh kẹo) dùng khi kết thúc một bữa ăn chính. Khẩu phần nhỏ thôi nhưng trình bày đẹp mắt. Món này thường bao gồm các loại thực phẩm ngọt, và có thể là đồ uống như rượu vang tráng miệng hoặc rượu mùi, nhưng có thể bao gồm cà phê, pho mát, hạt quả, hoặc các món ăn khác.', 'uploads/trang_mieng.png'),
+(3, 'Đồ Ăn Cơm', 'o-an-com', 'Cơm là một loại thức ăn được làm ra từ gạo bằng cách đem nấu với một lượng vừa đủ nước để nấu chín. Cơm thường có nguyên liệu là gạo tẻ/gạo nếp và không có thêm gia vị, là thức ăn chính gần như hàng ngày của người Đông Nam Á và Đông Á. Cơm còn là nguyên liệu cho các món ăn chế biến khác nhau', 'uploads/do_an_com.png'),
+(4, 'Nước Giải Khát', 'nuoc-giai-khat', 'Nước giải khát có ga là một loại thức uống thường chứa nước cácbon dioxide bão hòa, chất làm ngọt, và thường có thêm hương liệu. Chất làm ngọt có thể là đường, xirô bắp giàu gluctose, chất làm ngọt thay thế. Một số nước giải khát có ga khác còn chứa caffeine, phẩm màu, chất bảo quản và các thành phần khác.', 'uploads/nuoc_giai_khat.png');
 
 -- --------------------------------------------------------
 
@@ -152,8 +163,15 @@ CREATE TABLE `api_person` (
 --
 
 INSERT INTO `api_person` (`id`, `money`, `phone`, `address`, `user_id`, `avatar`) VALUES
-(2, '0.000', '0999888777', 'Địa chỉ nhà, Xã/Phường, Quận/huyện, Thành Phố', 1, 'uploads_avatar/default.png'),
-(3, '0.000', '03883159688', 'Xuan Dinh, Bac Tu Liem, Ha Noi', 2, 'uploads_avatar/default.png');
+(2, '0.000', '0379962045', 'Cổ Nhuế, Bắc Từ Liêm, Hà Nội', 1, 'uploads_avatar/292185726_163358052892234_5730603579703538344_n.jpg'),
+(3, '0.000', '03883159688', 'Xuan Dinh, Bac Tu Liem, Ha Noi', 2, 'uploads_avatar/default.png'),
+(4, '0.000', '0999888777', '', 5, 'uploads_avatar/default.png'),
+(5, '0.000', '0966888999', '', 6, 'uploads_avatar/default.png'),
+(6, '0.000', '0966888999', '', 7, 'uploads_avatar/default.png'),
+(7, '0.000', '0999888777', '', 8, 'uploads_avatar/default.png'),
+(8, '0.000', '0999888777', '', 9, 'uploads_avatar/default.png'),
+(9, '0.000', '0214268999', '', 10, 'uploads_avatar/default.png'),
+(10, '0.000', '0388315968', '', 11, 'uploads_avatar/default.png');
 
 -- --------------------------------------------------------
 
@@ -262,8 +280,17 @@ CREATE TABLE `auth_user` (
 --
 
 INSERT INTO `auth_user` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `email`, `is_staff`, `is_active`, `date_joined`) VALUES
-(1, 'pbkdf2_sha256$320000$EwEj8FE2SLugRlQ64MCOr8$jT1i3qS5ijn1WUBJVnCPWutte1yd7R4ObmsLi9Sh0FM=', '2022-09-24 12:18:00.000000', 1, 'chuminhnam', 'Nguyễn', 'Văn A', 'nguyenvana@gmail.com', 1, 1, '2022-09-24 12:17:49.000000'),
-(2, 'pbkdf2_sha256$320000$QJtNmbvDIurlJewPtx8E3l$JDPGxJym7PaBlF8lXJH1+nOHcYpGJHc8tRm7VvlyPEY=', NULL, 0, 'tranngocha', 'Trần Ngọc', 'Hà', 'tranngocha@gmail.com', 0, 1, '2022-09-27 01:32:53.000000');
+(1, 'pbkdf2_sha256$320000$EwEj8FE2SLugRlQ64MCOr8$jT1i3qS5ijn1WUBJVnCPWutte1yd7R4ObmsLi9Sh0FM=', '2022-10-10 10:14:20.234965', 1, 'chuminhnam', 'Chu', 'Minh Nam', 'chuminhnamma@gmail.com', 1, 1, '2022-09-24 12:17:49.000000'),
+(2, 'pbkdf2_sha256$320000$QJtNmbvDIurlJewPtx8E3l$JDPGxJym7PaBlF8lXJH1+nOHcYpGJHc8tRm7VvlyPEY=', NULL, 0, 'tranngocha', 'Trần Ngọc', 'Hà', 'tranngocha@gmail.com', 0, 1, '2022-09-27 01:32:53.000000'),
+(3, 'nguyenvana123!@', NULL, 0, 'nguyenvana', '', '', '', 0, 1, '2022-10-10 14:35:56.389988'),
+(4, 'nguyenvana123!@', NULL, 0, 'nguyenvanb', '', '', '', 0, 1, '2022-10-10 14:39:07.342795'),
+(5, 'nguyenvana123!@', NULL, 0, 'nguyenvanc', '', '', '', 0, 1, '2022-10-10 14:49:27.308775'),
+(6, 'nguyenvand', NULL, 0, 'nguyenvand', '', '', '', 0, 1, '2022-10-10 15:12:14.013457'),
+(7, 'nguyenvane', NULL, 0, 'nguyenvane', '', '', '', 0, 1, '2022-10-10 15:12:23.093582'),
+(8, 'chuminhnam', NULL, 0, 'namdeptrai', '', '', '', 0, 1, '2022-10-10 15:19:13.643663'),
+(9, 'pbkdf2_sha256$320000$Rq2vrxASFZd87DhDXoZjdx$sc0C4C4lI/8qkeYjCbd2r9IQEZ4co9XF+F/7Nl+UDZA=', NULL, 0, 'nguyenvang', '', '', '', 0, 1, '2022-10-10 15:21:11.119495'),
+(10, 'pbkdf2_sha256$320000$5xdqQBqplWRnuMIAvFONTf$lLOCKKBkXOtxgQe54MJtpWQJZBHzYG/AP7tOQOalJmo=', NULL, 0, 'nguyenvanh', '', '', '', 0, 1, '2022-10-10 15:22:05.315874'),
+(11, 'pbkdf2_sha256$320000$H7Epshaa6J8utj2dVYzdFr$DFtyNpyWxOwyYENEQcBXWFunxUznW4tRK+ks+7YKBFQ=', NULL, 0, 'ngocha', '', '', '', 0, 1, '2022-10-11 12:07:32.173594');
 
 -- --------------------------------------------------------
 
@@ -377,7 +404,13 @@ INSERT INTO `django_admin_log` (`id`, `action_time`, `object_id`, `object_repr`,
 (64, '2022-09-27 11:48:53.125122', '1', 'chuminhnam', 2, '[{\"changed\": {\"fields\": [\"First name\", \"Last name\"]}}]', 4, 1),
 (65, '2022-09-27 12:30:32.665373', '2', 'tranngocha', 2, '[{\"changed\": {\"fields\": [\"password\"]}}]', 4, 1),
 (66, '2022-09-27 12:57:43.695850', '2', 'tranngocha', 2, '[{\"changed\": {\"fields\": [\"password\"]}}]', 4, 1),
-(67, '2022-09-28 12:01:30.656589', '13', 'chuminhnam', 2, '[{\"changed\": {\"fields\": [\"Product\"]}}]', 10, 1);
+(67, '2022-09-28 12:01:30.656589', '13', 'chuminhnam', 2, '[{\"changed\": {\"fields\": [\"Product\"]}}]', 10, 1),
+(68, '2022-10-10 10:14:43.205737', '2', 'chuminhnam', 2, '[{\"changed\": {\"fields\": [\"Avatar\"]}}]', 9, 1),
+(69, '2022-10-10 10:23:34.338597', '2', 'chuminhnam', 2, '[{\"changed\": {\"fields\": [\"Avatar\"]}}]', 9, 1),
+(70, '2022-10-21 08:18:19.267999', '4', 'Nước Giải Khát', 2, '[{\"changed\": {\"fields\": [\"Image\"]}}]', 7, 1),
+(71, '2022-10-21 08:21:21.334719', '3', 'Đồ Ăn Cơm', 2, '[{\"changed\": {\"fields\": [\"Image\"]}}]', 7, 1),
+(72, '2022-10-21 08:22:09.861965', '2', 'Đồ Tráng Miệng', 2, '[{\"changed\": {\"fields\": [\"Image\"]}}]', 7, 1),
+(73, '2022-10-21 08:23:12.839627', '1', 'Đồ Ăn Nhanh', 2, '[{\"changed\": {\"fields\": [\"Image\"]}}]', 7, 1);
 
 -- --------------------------------------------------------
 
@@ -449,7 +482,8 @@ INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
 (22, 'Api', '0004_person_avatar', '2022-09-26 00:40:00.843116'),
 (23, 'Api', '0005_foodcart_status', '2022-09-27 03:11:34.081062'),
 (24, 'Api', '0006_rename_status_foodcart_isorder', '2022-09-27 05:06:27.160403'),
-(25, 'Api', '0003_foodcart_isorder_person_avatar_alter_person_phone', '2022-09-27 05:16:39.202229');
+(25, 'Api', '0003_foodcart_isorder_person_avatar_alter_person_phone', '2022-09-27 05:16:39.202229'),
+(26, 'Api', '0004_foodcategory_image', '2022-10-21 08:15:47.737877');
 
 -- --------------------------------------------------------
 
@@ -468,7 +502,7 @@ CREATE TABLE `django_session` (
 --
 
 INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
-('jys9al0s91tykt2rhqwqr8n0nj2ge56x', '.eJxVjDsOwjAQBe_iGln2xp-Ikp4zWBvvLg4gW4qTCnF3iJQC2jcz76USbmtJW-clzaTOyqrT7zZhfnDdAd2x3prOra7LPOld0Qft-tqIn5fD_Tso2Mu3ZiIWgyTCOPocJHpgGLN3zgdkiDG6gOisGLCDDBA5Bg_Wk2RnglPvDxChOAY:1odA9f:4-Ev7w9c8QiivvAFyhoMWfEK3r-jhqp7KfJ4er4kCTc', '2022-10-11 12:57:43.706281');
+('t8ped10bl3iz3vbslw738ttslfu8nqjm', '.eJxVjEEOwiAQRe_C2hAKTJm4dO8ZyMwAUjU0Ke3KeHdt0oVu_3vvv1Skba1x63mJU1JnNajT78Ykj9x2kO7UbrOWua3LxHpX9EG7vs4pPy-H-3dQqddvbRHAF8_FCUJgZwgMCtiAlA0im4AJEdjb0RWyeRxKCpiDFy_OMav3B8gCN4A:1ohpng:SX5siHdIDFey9e90fYNpr7yg8BuElRc6xo4SC1WdP5Y', '2022-10-24 10:14:20.245940');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -591,7 +625,7 @@ ALTER TABLE `api_food`
 -- AUTO_INCREMENT cho bảng `api_foodcart`
 --
 ALTER TABLE `api_foodcart`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT cho bảng `api_foodcategory`
@@ -603,7 +637,7 @@ ALTER TABLE `api_foodcategory`
 -- AUTO_INCREMENT cho bảng `api_person`
 --
 ALTER TABLE `api_person`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT cho bảng `auth_group`
@@ -627,7 +661,7 @@ ALTER TABLE `auth_permission`
 -- AUTO_INCREMENT cho bảng `auth_user`
 --
 ALTER TABLE `auth_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT cho bảng `auth_user_groups`
@@ -645,7 +679,7 @@ ALTER TABLE `auth_user_user_permissions`
 -- AUTO_INCREMENT cho bảng `django_admin_log`
 --
 ALTER TABLE `django_admin_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT cho bảng `django_content_type`
@@ -657,7 +691,7 @@ ALTER TABLE `django_content_type`
 -- AUTO_INCREMENT cho bảng `django_migrations`
 --
 ALTER TABLE `django_migrations`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
