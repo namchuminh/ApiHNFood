@@ -1,3 +1,4 @@
+from email.mime import image
 from email.policy import default
 from django.db import models
 from datetime import datetime
@@ -52,6 +53,9 @@ class Food(models.Model):
 class FoodCart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Food, on_delete=models.CASCADE, blank= True, null= True)
+    name = models.CharField(max_length=255, blank= True, null= True)
+    image = models.ImageField(upload_to ='uploads/', blank= True, null= True)
+    price = models.DecimalField(max_digits=10, decimal_places=3, default=0)
     addCart = models.BooleanField(default=False)
     isOrder = models.BooleanField(default=False)
     def __str__(self):

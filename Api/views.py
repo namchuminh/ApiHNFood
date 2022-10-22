@@ -171,23 +171,18 @@ class GetFoodByCategory(APIView):
         
 class FoodCartGetPost(APIView):
     permission_classes = [permissions.IsAuthenticated]
-    def get_object(self, request):
-        try:
-            token = request.headers.get('Authorization').split(' ')[1]
-            uid = getUserIdByToken(token=token)
-            user = User.objects.all().get(pk = uid)
-            return FooCart.objects.filter(user = user, isOrder = False)
-        except FooCart.DoesNotExist:
-            raise Http404
-        
     @swagger_auto_schema(
         operation_description="Lấy tất cả sản phẩm có trong giỏ hàng của một User dựa theo Token",
         operation_summary="Lấy tất cả sản phẩm đã có trong giỏ hàng"
     )
     def get(self, request, format=None):
-        foodCart = self.get_object(request)
+        token = request.headers.get('Authorization').split(' ')[1]
+        uid = getUserIdByToken(token=token)
+        user = User.objects.all().get(pk = uid)
+        foodCart = FooCart.objects.filter(user = user, isOrder = False)
         serializer = FoodCartSerializer(foodCart, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     
     @swagger_auto_schema(
         request_body=openapi.Schema(
