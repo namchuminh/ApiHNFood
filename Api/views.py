@@ -1,7 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 from django.http import Http404
-from numpy import delete, product
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
