@@ -1,9 +1,8 @@
-from email.mime import image
-from email.policy import default
 from django.db import models
 from datetime import datetime
 from django.contrib.auth.models import User
 from django.utils.text import slugify 
+
 
 class Person(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -58,5 +57,11 @@ class FoodCart(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=3, default=0)
     addCart = models.BooleanField(default=False)
     isOrder = models.BooleanField(default=False)
+    def save(self, *args, **kwargs):
+        food = Food.objects.all().get(name=self.product)
+        self.name = food.name
+        self.image = food.image 
+        self.price = food.price
+        super(FoodCart, self).save(*args, **kwargs)
     def __str__(self):
         return self.user.username

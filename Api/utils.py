@@ -17,4 +17,4 @@ def jsonUserData(serializerUser,serializerPerson):
         "address": serializerPerson.data["address"],
         "avatar" : serializerPerson.data["avatar"],
     }
-
+    
