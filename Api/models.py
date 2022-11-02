@@ -65,3 +65,28 @@ class FoodCart(models.Model):
         super(FoodCart, self).save(*args, **kwargs)
     def __str__(self):
         return self.user.username
+
+class FoodOrder(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Food, on_delete=models.CASCADE, blank= True, null= True)
+    personOrder = models.CharField(max_length=255)
+    addressOrder = models.CharField(max_length=255);
+    timeOrder = models.DateTimeField(auto_now_add=True, blank=True)
+    name = models.CharField(max_length=255, blank= True, null= True)
+    image = models.ImageField(upload_to ='uploads/', blank= True, null= True)
+    price = models.DecimalField(max_digits=10, decimal_places=3, default=0)
+    isReceived = models.BooleanField(default=False)
+    def save(self, *args, **kwargs):
+        food = Food.objects.all().get(name=self.product)
+        self.name = food.name
+        self.image = food.image 
+        self.price = food.price
+        
+        userOrder = User.objects.all().get(pk=self.user)
+        person = Person.objects.all().get(user=userOrder)
+        self.personOrder = userOrder.first_name + " " + userOrder.last_name
+        self.addressOrder = person.address
+         
+        super(FoodOrder, self).save(*args, **kwargs)
+    def __str__(self):
+        return self.user.username
