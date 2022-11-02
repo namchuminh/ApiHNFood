@@ -2,10 +2,10 @@
 -- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 21, 2022 lúc 09:02 PM
--- Phiên bản máy phục vụ: 10.4.22-MariaDB
--- Phiên bản PHP: 7.4.27
+-- Host: 127.0.0.1
+-- Generation Time: Nov 02, 2022 at 10:53 AM
+-- Server version: 10.4.22-MariaDB
+-- PHP Version: 7.4.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Cơ sở dữ liệu: `hnfood`
+-- Database: `hnfood`
 --
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `api_food`
+-- Table structure for table `api_food`
 --
 
 CREATE TABLE `api_food` (
@@ -44,7 +44,7 @@ CREATE TABLE `api_food` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `api_food`
+-- Dumping data for table `api_food`
 --
 
 INSERT INTO `api_food` (`id`, `name`, `description`, `price`, `price_sale`, `image`, `image1`, `image2`, `image3`, `timeUpload`, `isProduct`, `slug`, `category_id`) VALUES
@@ -84,7 +84,7 @@ INSERT INTO `api_food` (`id`, `name`, `description`, `price`, `price_sale`, `ima
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `api_foodcart`
+-- Table structure for table `api_foodcart`
 --
 
 CREATE TABLE `api_foodcart` (
@@ -92,37 +92,28 @@ CREATE TABLE `api_foodcart` (
   `addCart` tinyint(1) NOT NULL,
   `product_id` bigint(20) DEFAULT NULL,
   `user_id` int(11) NOT NULL,
-  `isOrder` tinyint(1) NOT NULL
+  `isOrder` tinyint(1) NOT NULL,
+  `image` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `price` decimal(10,3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `api_foodcart`
+-- Dumping data for table `api_foodcart`
 --
 
-INSERT INTO `api_foodcart` (`id`, `addCart`, `product_id`, `user_id`, `isOrder`) VALUES
-(4, 0, 4, 1, 0),
-(6, 1, 7, 2, 1),
-(10, 1, 1, 2, 0),
-(11, 0, 5, 2, 0),
-(12, 0, 10, 2, 0),
-(13, 0, 18, 1, 0),
-(14, 0, 3, 1, 0),
-(15, 0, 6, 1, 0),
-(17, 0, 1, 1, 0),
-(18, 0, 1, 1, 0),
-(19, 0, 1, 1, 0),
-(20, 0, 8, 1, 0),
-(21, 0, 1, 1, 0),
-(22, 0, 2, 1, 0),
-(23, 0, 3, 1, 0),
-(24, 0, 3, 1, 0),
-(25, 0, 7, 1, 0),
-(26, 0, 14, 1, 0);
+INSERT INTO `api_foodcart` (`id`, `addCart`, `product_id`, `user_id`, `isOrder`, `image`, `name`, `price`) VALUES
+(27, 1, 1, 1, 0, 'uploads/Sữa-chua-nha-đam-Vinamilk-hộp-100g.jpg', 'Sữa chua Vinamilk', '60.000'),
+(28, 0, 5, 1, 0, 'uploads/an-bo-dau-phong-co-map-khong-va-cach-su-dung-2_GCpqpzU.jpg', 'Khoai tây chiên', '25.000'),
+(29, 0, 5, 1, 0, 'uploads/an-bo-dau-phong-co-map-khong-va-cach-su-dung-2_GCpqpzU.jpg', 'Khoai tây chiên', '25.000'),
+(30, 0, 11, 1, 0, 'uploads/pizza-ngon-re-11-compressed_uu9CGjR.jpg', 'Kem vị chuối', '10.000'),
+(31, 0, 3, 1, 0, 'uploads/an-bo-dau-phong-co-map-khong-va-cach-su-dung-2.jpg', 'Bánh mỳ bơ lạc', '25.000'),
+(32, 0, 9, 1, 0, 'uploads/pizza-american_style-texgrill-haiphong__5__0c4a7117ab9a418c97b60aa709165974_gran_vSiZO6B.jpg', 'Chè đậu xanh', '15.000');
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `api_foodcategory`
+-- Table structure for table `api_foodcategory`
 --
 
 CREATE TABLE `api_foodcategory` (
@@ -134,7 +125,7 @@ CREATE TABLE `api_foodcategory` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `api_foodcategory`
+-- Dumping data for table `api_foodcategory`
 --
 
 INSERT INTO `api_foodcategory` (`id`, `name`, `slug`, `description`, `image`) VALUES
@@ -146,7 +137,35 @@ INSERT INTO `api_foodcategory` (`id`, `name`, `slug`, `description`, `image`) VA
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `api_person`
+-- Table structure for table `api_foodorder`
+--
+
+CREATE TABLE `api_foodorder` (
+  `id` bigint(20) NOT NULL,
+  `personOrder` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `addressOrder` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `timeOrder` datetime(6) NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `image` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `price` decimal(10,3) NOT NULL,
+  `isReceived` tinyint(1) NOT NULL,
+  `product_id` bigint(20) DEFAULT NULL,
+  `user_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `api_foodorder`
+--
+
+INSERT INTO `api_foodorder` (`id`, `personOrder`, `addressOrder`, `timeOrder`, `name`, `image`, `price`, `isReceived`, `product_id`, `user_id`) VALUES
+(1, 'Chu Minh Nam', 'Cổ Nhuế, Bắc Từ Liêm, Hà Nội', '2022-11-02 09:35:52.981413', 'Sữa chua Vinamilk', 'uploads/Sữa-chua-nha-đam-Vinamilk-hộp-100g.jpg', '60.000', 0, 1, 1),
+(2, 'Trần Ngọc Hà', 'Xuan Dinh, Bac Tu Liem, Ha Noi', '2022-11-02 09:49:56.823500', 'Salad rau trộn', 'uploads/pizza-ngon-re-11-compressed_9kHItlH.jpg', '35.000', 0, 8, 2),
+(3, 'Trần Ngọc Hà', 'Xuan Dinh, Bac Tu Liem, Ha Noi', '2022-11-02 16:51:31.916989', 'Nước cam Twister', 'uploads/tra-xanh-c2-huong-chanh-360ml-201912090949471802_cuq7fgZ.jpg', '15.000', 0, 32, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `api_person`
 --
 
 CREATE TABLE `api_person` (
@@ -159,7 +178,7 @@ CREATE TABLE `api_person` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `api_person`
+-- Dumping data for table `api_person`
 --
 
 INSERT INTO `api_person` (`id`, `money`, `phone`, `address`, `user_id`, `avatar`) VALUES
@@ -176,7 +195,7 @@ INSERT INTO `api_person` (`id`, `money`, `phone`, `address`, `user_id`, `avatar`
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `auth_group`
+-- Table structure for table `auth_group`
 --
 
 CREATE TABLE `auth_group` (
@@ -187,7 +206,7 @@ CREATE TABLE `auth_group` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `auth_group_permissions`
+-- Table structure for table `auth_group_permissions`
 --
 
 CREATE TABLE `auth_group_permissions` (
@@ -199,7 +218,7 @@ CREATE TABLE `auth_group_permissions` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `auth_permission`
+-- Table structure for table `auth_permission`
 --
 
 CREATE TABLE `auth_permission` (
@@ -210,7 +229,7 @@ CREATE TABLE `auth_permission` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `auth_permission`
+-- Dumping data for table `auth_permission`
 --
 
 INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALUES
@@ -253,12 +272,16 @@ INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALU
 (37, 'Can add food cart', 10, 'add_foodcart'),
 (38, 'Can change food cart', 10, 'change_foodcart'),
 (39, 'Can delete food cart', 10, 'delete_foodcart'),
-(40, 'Can view food cart', 10, 'view_foodcart');
+(40, 'Can view food cart', 10, 'view_foodcart'),
+(41, 'Can add food order', 11, 'add_foodorder'),
+(42, 'Can change food order', 11, 'change_foodorder'),
+(43, 'Can delete food order', 11, 'delete_foodorder'),
+(44, 'Can view food order', 11, 'view_foodorder');
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `auth_user`
+-- Table structure for table `auth_user`
 --
 
 CREATE TABLE `auth_user` (
@@ -276,11 +299,11 @@ CREATE TABLE `auth_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `auth_user`
+-- Dumping data for table `auth_user`
 --
 
 INSERT INTO `auth_user` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `email`, `is_staff`, `is_active`, `date_joined`) VALUES
-(1, 'pbkdf2_sha256$320000$EwEj8FE2SLugRlQ64MCOr8$jT1i3qS5ijn1WUBJVnCPWutte1yd7R4ObmsLi9Sh0FM=', '2022-10-10 10:14:20.234965', 1, 'chuminhnam', 'Chu', 'Minh Nam', 'chuminhnamma@gmail.com', 1, 1, '2022-09-24 12:17:49.000000'),
+(1, 'pbkdf2_sha256$320000$EwEj8FE2SLugRlQ64MCOr8$jT1i3qS5ijn1WUBJVnCPWutte1yd7R4ObmsLi9Sh0FM=', '2022-11-02 09:15:22.934688', 1, 'chuminhnam', 'Chu', 'Minh Nam', 'chuminhnamma@gmail.com', 1, 1, '2022-09-24 12:17:49.000000'),
 (2, 'pbkdf2_sha256$320000$QJtNmbvDIurlJewPtx8E3l$JDPGxJym7PaBlF8lXJH1+nOHcYpGJHc8tRm7VvlyPEY=', NULL, 0, 'tranngocha', 'Trần Ngọc', 'Hà', 'tranngocha@gmail.com', 0, 1, '2022-09-27 01:32:53.000000'),
 (3, 'nguyenvana123!@', NULL, 0, 'nguyenvana', '', '', '', 0, 1, '2022-10-10 14:35:56.389988'),
 (4, 'nguyenvana123!@', NULL, 0, 'nguyenvanb', '', '', '', 0, 1, '2022-10-10 14:39:07.342795'),
@@ -295,7 +318,7 @@ INSERT INTO `auth_user` (`id`, `password`, `last_login`, `is_superuser`, `userna
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `auth_user_groups`
+-- Table structure for table `auth_user_groups`
 --
 
 CREATE TABLE `auth_user_groups` (
@@ -307,7 +330,7 @@ CREATE TABLE `auth_user_groups` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `auth_user_user_permissions`
+-- Table structure for table `auth_user_user_permissions`
 --
 
 CREATE TABLE `auth_user_user_permissions` (
@@ -319,7 +342,7 @@ CREATE TABLE `auth_user_user_permissions` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `django_admin_log`
+-- Table structure for table `django_admin_log`
 --
 
 CREATE TABLE `django_admin_log` (
@@ -334,7 +357,7 @@ CREATE TABLE `django_admin_log` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `django_admin_log`
+-- Dumping data for table `django_admin_log`
 --
 
 INSERT INTO `django_admin_log` (`id`, `action_time`, `object_id`, `object_repr`, `action_flag`, `change_message`, `content_type_id`, `user_id`) VALUES
@@ -410,12 +433,32 @@ INSERT INTO `django_admin_log` (`id`, `action_time`, `object_id`, `object_repr`,
 (70, '2022-10-21 08:18:19.267999', '4', 'Nước Giải Khát', 2, '[{\"changed\": {\"fields\": [\"Image\"]}}]', 7, 1),
 (71, '2022-10-21 08:21:21.334719', '3', 'Đồ Ăn Cơm', 2, '[{\"changed\": {\"fields\": [\"Image\"]}}]', 7, 1),
 (72, '2022-10-21 08:22:09.861965', '2', 'Đồ Tráng Miệng', 2, '[{\"changed\": {\"fields\": [\"Image\"]}}]', 7, 1),
-(73, '2022-10-21 08:23:12.839627', '1', 'Đồ Ăn Nhanh', 2, '[{\"changed\": {\"fields\": [\"Image\"]}}]', 7, 1);
+(73, '2022-10-21 08:23:12.839627', '1', 'Đồ Ăn Nhanh', 2, '[{\"changed\": {\"fields\": [\"Image\"]}}]', 7, 1),
+(74, '2022-10-22 08:05:15.380327', '27', 'chuminhnam', 1, '[{\"added\": {}}]', 10, 1),
+(75, '2022-10-22 08:06:21.410021', '4', 'chuminhnam', 3, '', 10, 1),
+(76, '2022-10-22 08:06:24.068653', '6', 'tranngocha', 3, '', 10, 1),
+(77, '2022-10-22 08:06:26.097411', '18', 'chuminhnam', 3, '', 10, 1),
+(78, '2022-10-22 08:06:28.901173', '20', 'chuminhnam', 3, '', 10, 1),
+(79, '2022-10-22 08:06:31.952057', '17', 'chuminhnam', 3, '', 10, 1),
+(80, '2022-10-22 08:06:34.010346', '23', 'chuminhnam', 3, '', 10, 1),
+(81, '2022-10-22 08:06:36.135395', '22', 'chuminhnam', 3, '', 10, 1),
+(82, '2022-10-22 08:06:38.472722', '14', 'chuminhnam', 3, '', 10, 1),
+(83, '2022-10-22 08:06:40.811242', '11', 'tranngocha', 3, '', 10, 1),
+(84, '2022-10-22 08:06:43.098653', '21', 'chuminhnam', 3, '', 10, 1),
+(85, '2022-10-22 08:06:45.181899', '10', 'tranngocha', 3, '', 10, 1),
+(86, '2022-10-22 08:06:47.105272', '12', 'tranngocha', 3, '', 10, 1),
+(87, '2022-10-22 08:06:48.860932', '13', 'chuminhnam', 3, '', 10, 1),
+(88, '2022-10-22 08:06:50.640935', '15', 'chuminhnam', 3, '', 10, 1),
+(89, '2022-10-22 08:06:53.388005', '19', 'chuminhnam', 3, '', 10, 1),
+(90, '2022-10-22 08:06:55.767904', '24', 'chuminhnam', 3, '', 10, 1),
+(91, '2022-10-22 08:06:57.747766', '25', 'chuminhnam', 3, '', 10, 1),
+(92, '2022-10-22 08:07:00.524245', '26', 'chuminhnam', 3, '', 10, 1),
+(93, '2022-11-02 09:35:52.982378', '1', 'chuminhnam', 1, '[{\"added\": {}}]', 11, 1);
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `django_content_type`
+-- Table structure for table `django_content_type`
 --
 
 CREATE TABLE `django_content_type` (
@@ -425,7 +468,7 @@ CREATE TABLE `django_content_type` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `django_content_type`
+-- Dumping data for table `django_content_type`
 --
 
 INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
@@ -433,6 +476,7 @@ INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
 (8, 'Api', 'food'),
 (10, 'Api', 'foodcart'),
 (7, 'Api', 'foodcategory'),
+(11, 'Api', 'foodorder'),
 (9, 'Api', 'person'),
 (3, 'auth', 'group'),
 (2, 'auth', 'permission'),
@@ -443,7 +487,7 @@ INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `django_migrations`
+-- Table structure for table `django_migrations`
 --
 
 CREATE TABLE `django_migrations` (
@@ -454,7 +498,7 @@ CREATE TABLE `django_migrations` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `django_migrations`
+-- Dumping data for table `django_migrations`
 --
 
 INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
@@ -483,12 +527,15 @@ INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
 (23, 'Api', '0005_foodcart_status', '2022-09-27 03:11:34.081062'),
 (24, 'Api', '0006_rename_status_foodcart_isorder', '2022-09-27 05:06:27.160403'),
 (25, 'Api', '0003_foodcart_isorder_person_avatar_alter_person_phone', '2022-09-27 05:16:39.202229'),
-(26, 'Api', '0004_foodcategory_image', '2022-10-21 08:15:47.737877');
+(26, 'Api', '0004_foodcategory_image', '2022-10-21 08:15:47.737877'),
+(27, 'Api', '0005_foodcart_image_foodcart_name_foodcart_price', '2022-10-22 07:57:20.764976'),
+(28, 'Api', '0006_foodorder', '2022-11-02 09:18:59.680185'),
+(29, 'Api', '0007_alter_foodorder_timeorder', '2022-11-02 09:51:15.675568');
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `django_session`
+-- Table structure for table `django_session`
 --
 
 CREATE TABLE `django_session` (
@@ -498,18 +545,19 @@ CREATE TABLE `django_session` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `django_session`
+-- Dumping data for table `django_session`
 --
 
 INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
+('5op4kmaswri1be8ct9ja4u5b2dpi4e0t', '.eJxVjEEOwiAQRe_C2hAKTJm4dO8ZyMwAUjU0Ke3KeHdt0oVu_3vvv1Skba1x63mJU1JnNajT78Ykj9x2kO7UbrOWua3LxHpX9EG7vs4pPy-H-3dQqddvbRHAF8_FCUJgZwgMCtiAlA0im4AJEdjb0RWyeRxKCpiDFy_OMav3B8gCN4A:1oq9qE:rROlBfJ9mPC-vhY1sGQYsHFP1UzI06gXBKkmBjs5Nug', '2022-11-16 09:15:22.937712'),
 ('t8ped10bl3iz3vbslw738ttslfu8nqjm', '.eJxVjEEOwiAQRe_C2hAKTJm4dO8ZyMwAUjU0Ke3KeHdt0oVu_3vvv1Skba1x63mJU1JnNajT78Ykj9x2kO7UbrOWua3LxHpX9EG7vs4pPy-H-3dQqddvbRHAF8_FCUJgZwgMCtiAlA0im4AJEdjb0RWyeRxKCpiDFy_OMav3B8gCN4A:1ohpng:SX5siHdIDFey9e90fYNpr7yg8BuElRc6xo4SC1WdP5Y', '2022-10-24 10:14:20.245940');
 
 --
--- Chỉ mục cho các bảng đã đổ
+-- Indexes for dumped tables
 --
 
 --
--- Chỉ mục cho bảng `api_food`
+-- Indexes for table `api_food`
 --
 ALTER TABLE `api_food`
   ADD PRIMARY KEY (`id`),
@@ -517,7 +565,7 @@ ALTER TABLE `api_food`
   ADD KEY `Api_food_category_id_caf0182b_fk_Api_foodcategory_id` (`category_id`);
 
 --
--- Chỉ mục cho bảng `api_foodcart`
+-- Indexes for table `api_foodcart`
 --
 ALTER TABLE `api_foodcart`
   ADD PRIMARY KEY (`id`),
@@ -525,28 +573,36 @@ ALTER TABLE `api_foodcart`
   ADD KEY `Api_foodcart_user_id_ff5fea96_fk_auth_user_id` (`user_id`);
 
 --
--- Chỉ mục cho bảng `api_foodcategory`
+-- Indexes for table `api_foodcategory`
 --
 ALTER TABLE `api_foodcategory`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `slug` (`slug`);
 
 --
--- Chỉ mục cho bảng `api_person`
+-- Indexes for table `api_foodorder`
+--
+ALTER TABLE `api_foodorder`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `Api_foodorder_product_id_2eebee73_fk_Api_food_id` (`product_id`),
+  ADD KEY `Api_foodorder_user_id_246c862a_fk_auth_user_id` (`user_id`);
+
+--
+-- Indexes for table `api_person`
 --
 ALTER TABLE `api_person`
   ADD PRIMARY KEY (`id`),
   ADD KEY `Api_person_user_id_f7a3196a_fk_auth_user_id` (`user_id`);
 
 --
--- Chỉ mục cho bảng `auth_group`
+-- Indexes for table `auth_group`
 --
 ALTER TABLE `auth_group`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `name` (`name`);
 
 --
--- Chỉ mục cho bảng `auth_group_permissions`
+-- Indexes for table `auth_group_permissions`
 --
 ALTER TABLE `auth_group_permissions`
   ADD PRIMARY KEY (`id`),
@@ -554,21 +610,21 @@ ALTER TABLE `auth_group_permissions`
   ADD KEY `auth_group_permissio_permission_id_84c5c92e_fk_auth_perm` (`permission_id`);
 
 --
--- Chỉ mục cho bảng `auth_permission`
+-- Indexes for table `auth_permission`
 --
 ALTER TABLE `auth_permission`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `auth_permission_content_type_id_codename_01ab375a_uniq` (`content_type_id`,`codename`);
 
 --
--- Chỉ mục cho bảng `auth_user`
+-- Indexes for table `auth_user`
 --
 ALTER TABLE `auth_user`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `username` (`username`);
 
 --
--- Chỉ mục cho bảng `auth_user_groups`
+-- Indexes for table `auth_user_groups`
 --
 ALTER TABLE `auth_user_groups`
   ADD PRIMARY KEY (`id`),
@@ -576,7 +632,7 @@ ALTER TABLE `auth_user_groups`
   ADD KEY `auth_user_groups_group_id_97559544_fk_auth_group_id` (`group_id`);
 
 --
--- Chỉ mục cho bảng `auth_user_user_permissions`
+-- Indexes for table `auth_user_user_permissions`
 --
 ALTER TABLE `auth_user_user_permissions`
   ADD PRIMARY KEY (`id`),
@@ -584,7 +640,7 @@ ALTER TABLE `auth_user_user_permissions`
   ADD KEY `auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm` (`permission_id`);
 
 --
--- Chỉ mục cho bảng `django_admin_log`
+-- Indexes for table `django_admin_log`
 --
 ALTER TABLE `django_admin_log`
   ADD PRIMARY KEY (`id`),
@@ -592,159 +648,172 @@ ALTER TABLE `django_admin_log`
   ADD KEY `django_admin_log_user_id_c564eba6_fk_auth_user_id` (`user_id`);
 
 --
--- Chỉ mục cho bảng `django_content_type`
+-- Indexes for table `django_content_type`
 --
 ALTER TABLE `django_content_type`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `django_content_type_app_label_model_76bd3d3b_uniq` (`app_label`,`model`);
 
 --
--- Chỉ mục cho bảng `django_migrations`
+-- Indexes for table `django_migrations`
 --
 ALTER TABLE `django_migrations`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `django_session`
+-- Indexes for table `django_session`
 --
 ALTER TABLE `django_session`
   ADD PRIMARY KEY (`session_key`),
   ADD KEY `django_session_expire_date_a5c62663` (`expire_date`);
 
 --
--- AUTO_INCREMENT cho các bảng đã đổ
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT cho bảng `api_food`
+-- AUTO_INCREMENT for table `api_food`
 --
 ALTER TABLE `api_food`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
--- AUTO_INCREMENT cho bảng `api_foodcart`
+-- AUTO_INCREMENT for table `api_foodcart`
 --
 ALTER TABLE `api_foodcart`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
--- AUTO_INCREMENT cho bảng `api_foodcategory`
+-- AUTO_INCREMENT for table `api_foodcategory`
 --
 ALTER TABLE `api_foodcategory`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT cho bảng `api_person`
+-- AUTO_INCREMENT for table `api_foodorder`
+--
+ALTER TABLE `api_foodorder`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `api_person`
 --
 ALTER TABLE `api_person`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT cho bảng `auth_group`
+-- AUTO_INCREMENT for table `auth_group`
 --
 ALTER TABLE `auth_group`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT cho bảng `auth_group_permissions`
+-- AUTO_INCREMENT for table `auth_group_permissions`
 --
 ALTER TABLE `auth_group_permissions`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT cho bảng `auth_permission`
+-- AUTO_INCREMENT for table `auth_permission`
 --
 ALTER TABLE `auth_permission`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
--- AUTO_INCREMENT cho bảng `auth_user`
+-- AUTO_INCREMENT for table `auth_user`
 --
 ALTER TABLE `auth_user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- AUTO_INCREMENT cho bảng `auth_user_groups`
+-- AUTO_INCREMENT for table `auth_user_groups`
 --
 ALTER TABLE `auth_user_groups`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT cho bảng `auth_user_user_permissions`
+-- AUTO_INCREMENT for table `auth_user_user_permissions`
 --
 ALTER TABLE `auth_user_user_permissions`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT cho bảng `django_admin_log`
+-- AUTO_INCREMENT for table `django_admin_log`
 --
 ALTER TABLE `django_admin_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
 
 --
--- AUTO_INCREMENT cho bảng `django_content_type`
+-- AUTO_INCREMENT for table `django_content_type`
 --
 ALTER TABLE `django_content_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- AUTO_INCREMENT cho bảng `django_migrations`
+-- AUTO_INCREMENT for table `django_migrations`
 --
 ALTER TABLE `django_migrations`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
--- Các ràng buộc cho các bảng đã đổ
+-- Constraints for dumped tables
 --
 
 --
--- Các ràng buộc cho bảng `api_food`
+-- Constraints for table `api_food`
 --
 ALTER TABLE `api_food`
   ADD CONSTRAINT `Api_food_category_id_caf0182b_fk_Api_foodcategory_id` FOREIGN KEY (`category_id`) REFERENCES `api_foodcategory` (`id`);
 
 --
--- Các ràng buộc cho bảng `api_foodcart`
+-- Constraints for table `api_foodcart`
 --
 ALTER TABLE `api_foodcart`
   ADD CONSTRAINT `Api_foodcart_product_id_eedf1396_fk_Api_food_id` FOREIGN KEY (`product_id`) REFERENCES `api_food` (`id`),
   ADD CONSTRAINT `Api_foodcart_user_id_ff5fea96_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`);
 
 --
--- Các ràng buộc cho bảng `api_person`
+-- Constraints for table `api_foodorder`
+--
+ALTER TABLE `api_foodorder`
+  ADD CONSTRAINT `Api_foodorder_product_id_2eebee73_fk_Api_food_id` FOREIGN KEY (`product_id`) REFERENCES `api_food` (`id`),
+  ADD CONSTRAINT `Api_foodorder_user_id_246c862a_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`);
+
+--
+-- Constraints for table `api_person`
 --
 ALTER TABLE `api_person`
   ADD CONSTRAINT `Api_person_user_id_f7a3196a_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`);
 
 --
--- Các ràng buộc cho bảng `auth_group_permissions`
+-- Constraints for table `auth_group_permissions`
 --
 ALTER TABLE `auth_group_permissions`
   ADD CONSTRAINT `auth_group_permissio_permission_id_84c5c92e_fk_auth_perm` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`),
   ADD CONSTRAINT `auth_group_permissions_group_id_b120cbf9_fk_auth_group_id` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`);
 
 --
--- Các ràng buộc cho bảng `auth_permission`
+-- Constraints for table `auth_permission`
 --
 ALTER TABLE `auth_permission`
   ADD CONSTRAINT `auth_permission_content_type_id_2f476e4b_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`);
 
 --
--- Các ràng buộc cho bảng `auth_user_groups`
+-- Constraints for table `auth_user_groups`
 --
 ALTER TABLE `auth_user_groups`
   ADD CONSTRAINT `auth_user_groups_group_id_97559544_fk_auth_group_id` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`),
   ADD CONSTRAINT `auth_user_groups_user_id_6a12ed8b_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`);
 
 --
--- Các ràng buộc cho bảng `auth_user_user_permissions`
+-- Constraints for table `auth_user_user_permissions`
 --
 ALTER TABLE `auth_user_user_permissions`
   ADD CONSTRAINT `auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`),
   ADD CONSTRAINT `auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`);
 
 --
--- Các ràng buộc cho bảng `django_admin_log`
+-- Constraints for table `django_admin_log`
 --
 ALTER TABLE `django_admin_log`
   ADD CONSTRAINT `django_admin_log_content_type_id_c4bce8eb_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
