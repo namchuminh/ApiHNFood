@@ -71,7 +71,7 @@ class FoodOrder(models.Model):
     product = models.ForeignKey(Food, on_delete=models.CASCADE, blank= True, null= True)
     personOrder = models.CharField(max_length=255)
     addressOrder = models.CharField(max_length=255);
-    timeOrder = models.DateTimeField(auto_now_add=True, blank=True)
+    timeOrder = models.DateTimeField(default=datetime.now, blank=True)
     name = models.CharField(max_length=255, blank= True, null= True)
     image = models.ImageField(upload_to ='uploads/', blank= True, null= True)
     price = models.DecimalField(max_digits=10, decimal_places=3, default=0)
@@ -82,7 +82,7 @@ class FoodOrder(models.Model):
         self.image = food.image 
         self.price = food.price
         
-        userOrder = User.objects.all().get(pk=self.user)
+        userOrder = User.objects.all().get(username=self.user)
         person = Person.objects.all().get(user=userOrder)
         self.personOrder = userOrder.first_name + " " + userOrder.last_name
         self.addressOrder = person.address

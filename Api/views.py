@@ -5,12 +5,14 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from Api.utils import getUserIdByToken, jsonUserData
-from .serializers import PersonSerializer, UserSerializer,FoodSerializer, FoodCategorySerializer, FoodCartSerializer
-from .serializers import UserPutSerializer, PersonPutSerializer, ChangePasswordSerializer, FoodCartPostSerializer, FoodCartPutSerializer, PersonRegisterSerializer, UserRegisterSerializer
+from .serializers import PersonSerializer, UserSerializer,FoodSerializer, FoodCategorySerializer, FoodCartSerializer, PersonRegisterSerializer, UserRegisterSerializer
+from .serializers import UserPutSerializer, PersonPutSerializer, ChangePasswordSerializer, FoodCartPostSerializer, FoodCartPutSerializer
+from .serializers import FoodOrderGetSerializer, FoodOrderPostSerializer
 from django.contrib.auth.models import User
 from .models import Food as Foo, Person
 from .models import FoodCategory as FooCategory
 from .models import FoodCart as FooCart
+from .models import FoodOrder as FooOrder
 from rest_framework import permissions
 from django.contrib.auth.hashers import make_password
 from drf_yasg import openapi
@@ -253,6 +255,47 @@ class FoodCartPutDelete(APIView):
             return Response({'message' : 'Success'},status=status.HTTP_204_NO_CONTENT)
         except FooCart.DoesNotExist:
             raise Http404
-        
+
+class FoodOrder(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    
+    @swagger_auto_schema(
+        operation_description="Lấy tất cả sản phẩm đã được đặt hàng bởi một User",
+        operation_summary="Lấy tất cả thông tin các sản phẩm đã được User đặt hàng"
+    )
+    def get(self, request):
+        try:
+            token = request.headers.get('Authorization').split(' ')[1]
+            uid = getUserIdByToken(token=token)
+            user = User.objects.all().get(pk = uid)
+            foodOrder = FooOrder.objects.filter(user = user, isReceived = False)
+            serializer = FoodOrderGetSerializer(foodOrder, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except FooCart.DoesNotExist:
+            raise Http404
+    
+    @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'product': openapi.Schema(type=openapi.TYPE_NUMBER, description='ID sản phẩm cần đặt hàng'),
+                'user': openapi.Schema(type=openapi.TYPE_NUMBER, description='ID người dùng'),
+            },
+        ),
+        operation_description="Thêm sản phẩm từ giỏ hàng của một User vào trạng thái đặt hàng",
+        operation_summary="Đặt hàng một sản phẩm đã có trong giỏ hàng của User"
+    )
+    def post(self, request,):
+        try:
+            token = request.headers.get('Authorization').split(' ')[1]
+            uid = getUserIdByToken(token=token)
+            request.data["user"] = uid
+            serializer = FoodOrderPostSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({"message" : "Success!"}, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except:
+            return Response(serializer.errors, status=status.HTTP_401_UNAUTHORIZED)
         
 
