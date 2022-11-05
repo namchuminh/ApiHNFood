@@ -123,11 +123,11 @@ class ChangePassword(APIView):
         return Response({"message" : "Faild update password!"}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 class Food(APIView):
-    test_param = openapi.Parameter('search', openapi.IN_QUERY, description="Tên món ăn cần tìm kiếm", type=openapi.TYPE_STRING)
+    search_param = openapi.Parameter('search', openapi.IN_QUERY, description="Tên món ăn cần tìm kiếm", type=openapi.TYPE_STRING)
     @swagger_auto_schema(
         operation_description="Lấy tất cả thông tin đồ ăn trong bảng Food",
         operation_summary="Lấy tất cả thông tin đồ ăn",
-        manual_parameters=[test_param]
+        manual_parameters=[search_param]
         
     )
     def get(self, request, format=None):
