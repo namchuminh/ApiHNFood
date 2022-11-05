@@ -123,12 +123,18 @@ class ChangePassword(APIView):
         return Response({"message" : "Faild update password!"}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 class Food(APIView):
+    test_param = openapi.Parameter('search', openapi.IN_QUERY, description="Tên món ăn cần tìm kiếm", type=openapi.TYPE_STRING)
     @swagger_auto_schema(
         operation_description="Lấy tất cả thông tin đồ ăn trong bảng Food",
-        operation_summary="Lấy tất cả thông tin đồ ăn"
+        operation_summary="Lấy tất cả thông tin đồ ăn",
+        manual_parameters=[test_param]
+        
     )
     def get(self, request, format=None):
         foods = Foo.objects.all()
+        search = request.query_params.get('search')
+        if search is not None:
+            foods = Foo.objects.all().filter(name__icontains=search)
         serializer = FoodSerializer(foods, many=True)
         return Response(serializer.data)
     
