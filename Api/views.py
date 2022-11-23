@@ -1,3 +1,4 @@
+from itertools import product
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 from django.http import Http404
@@ -208,11 +209,17 @@ class FoodCartGetPost(APIView):
             token = request.headers.get('Authorization').split(' ')[1]
             uid = getUserIdByToken(token=token)
             request.data["user"] = uid
-            serializer = FoodCartPostSerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save()
+            try:
+                number = FooCart.objects.get(product = request.data["product"]).number
+                number = number + 1
+                FooCart.objects.filter(product=request.data["product"]).update(number=number)
                 return Response({"message" : "Success!"}, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            except:
+                serializer = FoodCartPostSerializer(data=request.data)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response({"message" : "Success!"}, status=status.HTTP_201_CREATED)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except:
             return Response(serializer.errors, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -296,6 +303,8 @@ class FoodOrder(APIView):
             token = request.headers.get('Authorization').split(' ')[1]
             uid = getUserIdByToken(token=token)
             request.data["user"] = uid
+            product = request.data['product']
+            FooCart.objects.filter(product=product).update(isOrder=True)
             serializer = FoodOrderPostSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()

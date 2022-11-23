@@ -36,8 +36,7 @@ class Food(models.Model):
     image = models.ImageField(upload_to ='uploads/')
     image1 = models.ImageField(upload_to ='uploads/', blank=True, null=True)
     image2 = models.ImageField(upload_to ='uploads/', blank=True, null=True)
-    image3 = models.ImageField(upload_to ='uploads/', blank=True, null=True)
-    timeUpload = models.DateTimeField(default=datetime.now, blank=True) 
+    image3 = models.ImageField(upload_to ='uploads/', blank=True, null=True) 
     isProduct = models.BooleanField(default=True)
     category = models.ForeignKey(FoodCategory, on_delete=models.CASCADE, blank=True, null=True)
     slug = models.SlugField(unique=True, blank=True, null=True)
@@ -57,6 +56,7 @@ class FoodCart(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=3, default=0)
     addCart = models.BooleanField(default=False)
     isOrder = models.BooleanField(default=False)
+    number = models.IntegerField(default=1)
     def save(self, *args, **kwargs):
         food = Food.objects.all().get(name=self.product)
         self.name = food.name

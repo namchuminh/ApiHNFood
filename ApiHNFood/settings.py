@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'drf_yasg',
-    'Api'
+    'Api',
+    'import_export',
 ]
 
 MIDDLEWARE = [
