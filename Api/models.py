@@ -40,6 +40,7 @@ class Food(models.Model):
     isProduct = models.BooleanField(default=True)
     category = models.ForeignKey(FoodCategory, on_delete=models.CASCADE, blank=True, null=True)
     slug = models.SlugField(unique=True, blank=True, null=True)
+    popular = models.BooleanField(default=False)
     
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)

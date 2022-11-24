@@ -161,6 +161,17 @@ class FoodCategory(APIView):
         foodCategorys = FooCategory.objects.all()
         serializer = FoodCategorySerializer(foodCategorys, many=True)
         return Response(serializer.data)
+
+class FoodPopular(APIView):
+    @swagger_auto_schema(
+        operation_description="Lấy thông tin các sản phẩn nổi bật trong bảng Food",
+        operation_summary="Lấy tất thông tin sản phẩn nổi bật"
+    )
+    def get(self, request, format=None):
+        food = Foo.objects.all().filter(popular=True)
+        serializer = FoodSerializer(food, many=True)
+        return Response(serializer.data)
+    
     
 class GetFoodByCategory(APIView):
     @swagger_auto_schema(
