@@ -325,4 +325,32 @@ class FoodOrder(APIView):
         except:
             return Response(serializer.errors, status=status.HTTP_401_UNAUTHORIZED)
         
+    @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'idOrder': openapi.Schema(type=openapi.TYPE_NUMBER, description='ID đơn hàng cần hủy'),
+                'user': openapi.Schema(type=openapi.TYPE_NUMBER, description='ID người dùng'),
+            },
+        ),
+        operation_description="Hủy đơn hàng trong bảng Order",
+        operation_summary="Hủy một đơn hàng đang được đang được đặt"
+    )
+    def put(self, request):
+        try:
+            token = request.headers.get('Authorization').split(' ')[1]
+            uid = getUserIdByToken(token=token)
+            request.data["user"] = uid
+            idOrder = request.data['idOrder']
+            print(idOrder)
+            user = User.objects.all().get(pk=request.data["user"])
+            if FooOrder.objects.all().filter(user=user, pk=idOrder, isReceived=False).update(isCancel=True):
+                return Response({"message" : "Success!"}, status=status.HTTP_200_OK)
+            else:
+                return Response({"message" : "Failed!"}, status=status.HTTP_406_NOT_ACCEPTABLE)
+        except:
+            return Response({"message" : "Failed!"}, status=status.HTTP_400_BAD_REQUEST)
+            
+        
+        
 

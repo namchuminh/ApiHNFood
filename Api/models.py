@@ -79,6 +79,7 @@ class FoodOrder(models.Model):
     isReceived = models.BooleanField(default=False)
     number = models.IntegerField(default=1)
     phoneOrder = models.CharField(max_length=11, default=0)
+    isCancel = models.BooleanField(default=False)
     def save(self, *args, **kwargs):
         food = Food.objects.all().get(name=self.product)
         self.name = food.name

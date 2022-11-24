@@ -73,5 +73,3 @@ class FoodOrderPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = FoodOrder
         fields = ["user","product","number"]
-
-        
