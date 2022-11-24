@@ -77,6 +77,7 @@ class FoodOrder(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=3, default=0)
     isReceived = models.BooleanField(default=False)
     number = models.IntegerField(default=1)
+    phoneOrder = models.CharField(max_length=11, default=0)
     def save(self, *args, **kwargs):
         food = Food.objects.all().get(name=self.product)
         self.name = food.name
@@ -87,6 +88,7 @@ class FoodOrder(models.Model):
         person = Person.objects.all().get(user=userOrder)
         self.personOrder = userOrder.first_name + " " + userOrder.last_name
         self.addressOrder = person.address
+        self.phoneOrder = person.phone
          
         super(FoodOrder, self).save(*args, **kwargs)
     def __str__(self):
