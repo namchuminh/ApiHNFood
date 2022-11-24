@@ -281,7 +281,7 @@ class FoodOrder(APIView):
             token = request.headers.get('Authorization').split(' ')[1]
             uid = getUserIdByToken(token=token)
             user = User.objects.all().get(pk = uid)
-            foodOrder = FooOrder.objects.filter(user = user, isReceived = False)
+            foodOrder = FooOrder.objects.filter(user = user)
             serializer = FoodOrderGetSerializer(foodOrder, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except FooCart.DoesNotExist:
@@ -293,6 +293,7 @@ class FoodOrder(APIView):
             properties={
                 'product': openapi.Schema(type=openapi.TYPE_NUMBER, description='ID sản phẩm cần đặt hàng'),
                 'user': openapi.Schema(type=openapi.TYPE_NUMBER, description='ID người dùng'),
+                'number': openapi.Schema(type=openapi.TYPE_NUMBER, description='Số lượng sản phẩm cần đặt hàng'),
             },
         ),
         operation_description="Thêm sản phẩm từ giỏ hàng của một User vào trạng thái đặt hàng",

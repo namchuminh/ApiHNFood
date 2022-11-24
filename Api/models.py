@@ -76,6 +76,7 @@ class FoodOrder(models.Model):
     image = models.ImageField(upload_to ='uploads/', blank= True, null= True)
     price = models.DecimalField(max_digits=10, decimal_places=3, default=0)
     isReceived = models.BooleanField(default=False)
+    number = models.IntegerField(default=1)
     def save(self, *args, **kwargs):
         food = Food.objects.all().get(name=self.product)
         self.name = food.name

@@ -72,6 +72,6 @@ class FoodOrderGetSerializer(serializers.ModelSerializer):
 class FoodOrderPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = FoodOrder
-        fields = ["user","product",]
+        fields = ["user","product","number"]
 
         
