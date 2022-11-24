@@ -1,4 +1,3 @@
-from itertools import product
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 from django.http import Http404
@@ -316,7 +315,8 @@ class FoodOrder(APIView):
             uid = getUserIdByToken(token=token)
             request.data["user"] = uid
             product = request.data['product']
-            FooCart.objects.filter(product=product).update(isOrder=True)
+            user = User.objects.all().get(pk=request.data["user"])
+            FooCart.objects.filter(user=user,product=product).delete()
             serializer = FoodOrderPostSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()
