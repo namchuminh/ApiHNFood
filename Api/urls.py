@@ -4,9 +4,10 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-from .views import UserList, Food, FoodDetail, FoodCategory, GetFoodByCategory, FoodCartPutDelete, FoodCartGetPost, ChangePassword, UserRegister, FoodOrder, FoodPopular
+from .views import UserList, Food, FoodDetail, FoodCategory, GetFoodByCategory, FoodCartPutDelete, FoodCartGetPost, ChangePassword, UserRegister, FoodOrder, FoodPopular, Delivery
 
 urlpatterns = [
+    path('delivery/', Delivery.as_view(), name='get_delivery'),
     path('order/', FoodOrder.as_view(), name='get_order_food'),
     path('cart/', FoodCartGetPost.as_view(), name='get_post_cart'),
     path('cart/<int:pk>', FoodCartPutDelete.as_view(), name='put_delete_cart'),

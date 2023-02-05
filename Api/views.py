@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from Api.utils import getUserIdByToken, jsonUserData
-from .serializers import PersonSerializer, UserSerializer,FoodSerializer, FoodCategorySerializer, FoodCartSerializer, PersonRegisterSerializer, UserRegisterSerializer
+from .serializers import FoodPostSerializer, PersonSerializer, UserSerializer,FoodSerializer, FoodCategorySerializer, FoodCartSerializer, PersonRegisterSerializer, UserRegisterSerializer
 from .serializers import UserPutSerializer, PersonPutSerializer, ChangePasswordSerializer, FoodCartPostSerializer, FoodCartPutSerializer
 from .serializers import FoodOrderGetSerializer, FoodOrderPostSerializer
 from django.contrib.auth.models import User
@@ -19,7 +19,9 @@ from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.decorators import api_view
 from rest_framework import generics
-
+from django.db.models import Count
+from rest_framework.parsers import FormParser, MultiPartParser
+from django.core.files.storage import FileSystemStorage
 
 # Create your views here.
 
@@ -123,7 +125,11 @@ class ChangePassword(APIView):
         return Response({"message" : "Faild update password!"}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 class Food(APIView):
+    
     search_param = openapi.Parameter('search', openapi.IN_QUERY, description="Tên món ăn cần tìm kiếm", type=openapi.TYPE_STRING)
+    
+    
+    
     @swagger_auto_schema(
         operation_description="Lấy tất cả thông tin đồ ăn trong bảng Food",
         operation_summary="Lấy tất cả thông tin đồ ăn",
@@ -138,6 +144,41 @@ class Food(APIView):
         serializer = FoodSerializer(foods, many=True)
         return Response(serializer.data)
     
+    def post(self, request, format=None):
+        
+        image = request.FILES['image']
+        fs = FileSystemStorage()
+        fs.save('uploads/' + image.name, image)
+        image = 'uploads/' + image.name
+        
+        image1 = request.FILES['image1']
+        fs = FileSystemStorage()
+        fs.save('uploads/' + image1.name, image1)
+        image1 = 'uploads/' + image1.name
+        
+        image2 = request.FILES['image2']
+        fs = FileSystemStorage()
+        fs.save('uploads/' + image2.name, image2)
+        image2 = 'uploads/' + image2.name
+        
+        image3 = request.FILES['image3']
+        fs = FileSystemStorage()
+        fs.save('uploads/' + image3.name, image3)
+        image3 = 'uploads/' + image3.name
+        
+        request.data['image'] = image
+        request.data['image1'] = image1
+        request.data['image2'] = image2
+        request.data['image3'] = image3
+        
+        print(request.data)
+        
+        category = FooCategory.objects.all().get(pk=request.data['category'])
+        food = Foo(name=request.data['name'], description=request.data['description'], price=request.data['price'], price_sale=request.data['price_sale'], category=category, image=request.data['image'],image1=request.data['image1'],image2=request.data['image2'], image3=request.data['image3'])
+        food.save()
+        return Response({"msg": "success"}, status=status.HTTP_200_OK)
+
+
 class FoodDetail(APIView):
     @swagger_auto_schema(
         operation_description="Lấy chi tiết thông tin của một sản phẩm dựa theo ID sản phẩm",
@@ -281,13 +322,20 @@ class FoodCartPutDelete(APIView):
 
 class FoodOrder(APIView):
     permission_classes = [permissions.IsAuthenticated]
-    
+    user_param = openapi.Parameter('user', openapi.IN_QUERY, description="Id user cần xem chi tiết đơn đặt hàng", type=openapi.TYPE_STRING)
     @swagger_auto_schema(
         operation_description="Lấy tất cả sản phẩm đã được đặt hàng bởi một User",
-        operation_summary="Lấy tất cả thông tin các sản phẩm đã được User đặt hàng"
+        operation_summary="Lấy tất cả thông tin các sản phẩm đã được User đặt hàng",
+        manual_parameters=[user_param]
     )
     def get(self, request):
         try:
+            user = request.query_params.get('user')
+            if user is not None:
+                user = User.objects.all().get(pk = user)
+                foodOrder = FooOrder.objects.filter(user = user, isCancel = False, isReceived = False)
+                serializer = FoodOrderGetSerializer(foodOrder, many=True)
+                return Response(serializer.data, status=status.HTTP_200_OK)
             token = request.headers.get('Authorization').split(' ')[1]
             uid = getUserIdByToken(token=token)
             user = User.objects.all().get(pk = uid)
@@ -352,5 +400,27 @@ class FoodOrder(APIView):
             return Response({"message" : "Failed!"}, status=status.HTTP_400_BAD_REQUEST)
             
         
+class Delivery(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    
+    @swagger_auto_schema(
+        operation_description="Lấy tất cả thông tin sản phẩm và địa chỉ giao hàng của khách hàng",
+        operation_summary="Lấy tất cả thông tin các sản phẩm đã được User đặt hàng và cần giao hàng"
+    )
+    def get(self, request,):
+        try:
+            token = request.headers.get('Authorization').split(' ')[1]
+            uid = getUserIdByToken(token=token)
+            user = User.objects.all().get(pk = uid)
+            
+            if user.is_superuser == False:
+                return Response({"message": "Not Permission!"}, status=status.HTTP_403_FORBIDDEN)
+            
+            foodOrder = FooOrder.objects.raw('SELECT * FROM api_foodorder WHERE isReceived = 0 AND isCancel = 0 GROUP BY personOrder')
+            serializer = FoodOrderGetSerializer(foodOrder, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except FooCart.DoesNotExist:
+            raise Http404
         
+    
 

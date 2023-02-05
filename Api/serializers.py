@@ -5,7 +5,7 @@ from .models import Food,FoodCategory,FoodCart, FoodOrder, Person
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id","username", "password", "first_name", "last_name", "email"]
+        fields = ["id","username", "password", "first_name", "last_name", "email", "is_superuser"]
 
 class UserPutSerializer(serializers.ModelSerializer):
     class Meta:
@@ -31,6 +31,12 @@ class FoodSerializer(serializers.ModelSerializer):
     class Meta:
         model = Food
         fields = "__all__"
+
+class FoodPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Food
+        fields = ["name", "description", "price", "price_sale", "image", "image1", "image2", "image3", "category"]
+
 
 class FoodCartSerializer(serializers.ModelSerializer):
     class Meta:
