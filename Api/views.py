@@ -1,3 +1,4 @@
+from ast import Delete
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 from django.http import Http404
@@ -128,8 +129,6 @@ class Food(APIView):
     
     search_param = openapi.Parameter('search', openapi.IN_QUERY, description="Tên món ăn cần tìm kiếm", type=openapi.TYPE_STRING)
     
-    
-    
     @swagger_auto_schema(
         operation_description="Lấy tất cả thông tin đồ ăn trong bảng Food",
         operation_summary="Lấy tất cả thông tin đồ ăn",
@@ -144,6 +143,10 @@ class Food(APIView):
         serializer = FoodSerializer(foods, many=True)
         return Response(serializer.data)
     
+    @swagger_auto_schema(
+        operation_description="Thêm thông tin sản phẩm ",
+        operation_summary="Thêm sản phẩm"
+    )
     def post(self, request, format=None):
         
         image = request.FILES['image']
@@ -171,13 +174,75 @@ class Food(APIView):
         request.data['image2'] = image2
         request.data['image3'] = image3
         
-        print(request.data)
         
         category = FooCategory.objects.all().get(pk=request.data['category'])
         food = Foo(name=request.data['name'], description=request.data['description'], price=request.data['price'], price_sale=request.data['price_sale'], category=category, image=request.data['image'],image1=request.data['image1'],image2=request.data['image2'], image3=request.data['image3'])
         food.save()
         return Response({"msg": "success"}, status=status.HTTP_200_OK)
-
+    
+    @swagger_auto_schema(
+        operation_description="Cập nhật thông tin sản phẩm ",
+        operation_summary="Cập nhật sản phẩm"
+    )
+    
+    def put(self, request, format=None):
+        pk = request.data['pk']
+        food = Foo.objects.all().get(pk=pk)
+        
+        image = request.FILES['image']
+        fs = FileSystemStorage()
+        fs.save('uploads/' + image.name, image)
+        image = 'uploads/' + image.name
+        
+        image1 = request.FILES['image1']
+        fs = FileSystemStorage()
+        fs.save('uploads/' + image1.name, image1)
+        image1 = 'uploads/' + image1.name
+        
+        image2 = request.FILES['image2']
+        fs = FileSystemStorage()
+        fs.save('uploads/' + image2.name, image2)
+        image2 = 'uploads/' + image2.name
+        
+        image3 = request.FILES['image3']
+        fs = FileSystemStorage()
+        fs.save('uploads/' + image3.name, image3)
+        image3 = 'uploads/' + image3.name
+        
+        request.data['image'] = image
+        request.data['image1'] = image1
+        request.data['image2'] = image2
+        request.data['image3'] = image3
+        
+        category = FooCategory.objects.all().get(pk=request.data['category'])
+        food.name=request.data['name']
+        food.description=request.data['description']
+        food.price=request.data['price']
+        food.price_sale=request.data['price_sale']
+        food.category=category
+        food.image=request.data['image']
+        food.image1=request.data['image1']
+        food.image2=request.data['image2']
+        food.image3=request.data['image3']
+        food.save()
+        
+        return Response({"msg": "success"}, status=status.HTTP_200_OK)
+        
+    @swagger_auto_schema(
+        operation_description="Xóa thông tin sản phẩm ",
+        operation_summary="Xóa sản phẩm"
+    )
+    def delete(self, request, format=None):
+        try:
+            pk = request.data['pk']
+            print(pk)
+            if pk is None:
+                return Http404
+            food = Foo.objects.all().get(pk=pk)
+            food.delete()
+            return Response({'message' : 'Success'},status=status.HTTP_204_NO_CONTENT)
+        except FooCart.DoesNotExist:
+            raise Http404    
 
 class FoodDetail(APIView):
     @swagger_auto_schema(
